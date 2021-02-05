@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-  const Log = sequelize.define("log", {
+  const Log = (sequelize.define("log", {
     description: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    defintion: {
+    definition: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     owner: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
-  });
+  }));
   return Log;
 };

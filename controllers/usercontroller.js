@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
  *** USER SIGNUP ***
  ************************ */
 
-router.post("/create", function (req, res) {
+router.post("/register", function (req, res) {
   User.create({
     username: req.body.user.username,
     passwordHash: bcrypt.hashSync(req.body.user.passwordHash, 13),
@@ -32,15 +32,14 @@ router.post("/create", function (req, res) {
 router.post("/login", function (req, res) {
   User.findOne({
     where: {
-      username: req.body.username.email,
+      username: req.body.user.username,
     },
   })
-    .then(function loginSuccess(user) {
+    .then((user) => {
       if (user) {
-        bcrypt.compare(
-          req.body.username.passwordHash,
-          username.passwordHash,
-          function (err, matches) {
+        bcrypt.compare(req.body.user.passwordHash, user.passwordHash,
+         
+          (err, matches) => {
             if (matches) {
               let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                 expiresIn: 60 * 60 * 24,
@@ -54,8 +53,7 @@ router.post("/login", function (req, res) {
             } else {
               res.status(502).send({ error: "Login failed" });
             }
-          }
-        );
+          });
       } else {
         res.status(500).json({ error: "User does not exist." });
       }
